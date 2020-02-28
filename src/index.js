@@ -11,16 +11,15 @@ async function getTextFromImg() {
   const {
     data: { text }
   } = await worker.recognize(url);
-  console.log(text);
-
   await worker.terminate();
+  return text;
 }
 
 //create a server object:
 http
   .createServer(async function(req, res) {
-    await getTextFromImg();
-    res.write("Hello World123!"); //write a response to the client
+    const text = await getTextFromImg();
+    res.write(text); //write a response to the client
     res.end(); //end the response
   })
   .listen(8080); //the server object listens on port 8080
